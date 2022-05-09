@@ -1,0 +1,15 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node-fetch": "2.5.12",
+    "ts-node": "10.2.1",
+    "type": "module",
+    "typescript": "4.4.2"
+  },
+  "dependencies": {
+    "node-fetch": "2.6.1"
+  }
+}
