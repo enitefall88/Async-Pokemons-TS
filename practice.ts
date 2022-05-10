@@ -27,7 +27,7 @@ async function listAllPokemons (): Promise<PokemonList> {
   return await listResp.json()
 }
 
-const getPokemon = async (url: string) => {
+const getPokemon = async (url: string): Promise<Pokemon> => {
   const dataResp = await fetch(url)
   return await dataResp.json()
 }
@@ -38,6 +38,6 @@ const getPokemon = async (url: string) => {
     const pokemon = await getPokemon(list.results[0].url)
     console.log(pokemon.name)
   } catch(err) {
-
+  console.log(err)
   }
 }) ()

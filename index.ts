@@ -52,13 +52,26 @@ const getPokemon = async (url:string): Promise<Pokemon> => {
       return await dataResp.json()
 }
 
+const getFirstPokemon = async (): Promise<Pokemon> => { //try and catch is implemented together with resolve reject
+  return new Promise(async (resolve, reject) => { // async here as well
+        try {
+          const list = await getPokemonList()
+          resolve(await getPokemon(list.results[0].url))
+        } catch (err) {
+          reject(err)
+        }
+      }
+  )
+}
+
+
   (async function () {
     try {
-      const list = await getPokemonList()
+      const list = await getFirstPokemon()
 
-      const pokemon = await getPokemon(list.results[0].url)
+      const pokemon = await getFirstPokemon()
       console.log(pokemon.name)
-    } catch (err) {
+    } catch (err) { // catch is better to do for every function call?
       console.log(err)
     }
   }) () // Immediately invoked function
