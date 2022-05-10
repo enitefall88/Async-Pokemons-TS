@@ -44,11 +44,11 @@ fetch("https://pokeapi.co/api/v2/pokemon/") // returns a promise and
 
 const getPokemonList = async (): Promise<PokemonList> => { // specifying return as promise
   const listResp = await fetch("https://pokeapi.co/api/v2/pokemon/")
-  return await listResp.json()
+  return await listResp.json()  // Promise<PokemonList> does it return a promise here?
 }
 
 const getPokemon = async (url:string): Promise<Pokemon> => {
-      const dataResp = await fetch(url)
+      const dataResp = await fetch(url) // url for the pokemon
       return await dataResp.json()
 }
 
@@ -57,12 +57,11 @@ const getPokemon = async (url:string): Promise<Pokemon> => {
       const list = await getPokemonList()
 
       const pokemon = await getPokemon(list.results[0].url)
-      const dataResp = await fetch(list.results[0].url)
-      const data = await dataResp.json()
-      console.log(data.stats)
+      console.log(pokemon.name)
     } catch (err) {
       console.log(err)
     }
   }) () // Immediately invoked function
+
 
 
