@@ -48,13 +48,14 @@ const getPokemonList = async (): Promise<PokemonList> => { // specifying return 
 }
 
 const getPokemon = async (url:string): Promise<Pokemon> => {
-      const dataResp = await fetch(url) // url for the pokemon
+      const dataResp = await fetch(url) // url of the pokemon`s description
       return await dataResp.json()
 }
 
 const getFirstPokemon = async (): Promise<Pokemon> => { //try and catch is implemented together with resolve reject
   return new Promise(async (resolve, reject) => { // async here as well
         try {
+          console.log("Getting the list")
           const list = await getPokemonList()
           resolve(await getPokemon(list.results[0].url))
         } catch (err) {
@@ -65,16 +66,36 @@ const getFirstPokemon = async (): Promise<Pokemon> => { //try and catch is imple
 }
 
 
-  (async function () {
+/*  (async function () {
     try {
-      const list = await getFirstPokemon()
+      //const list = await getFirstPokemon()
 
-      const pokemon = await getFirstPokemon()
+      const pokemonPromise = await getFirstPokemon()
+      const pokemon = await pokemonPromise //?? waiting for the promise to get settled and return an object?
       console.log(pokemon.name)
+      const pokemon2 = await pokemonPromise // the promise is fulfilled already - get the result immediately
+      console.log(pokemon2.name)// pokemon2 above makes a cache, promise as a cache, makes a closure?
     } catch (err) { // catch is better to do for every function call?
       console.log(err)
     }
-  }) () // Immediately invoked function
+  }) () // Immediately invoked function*/
 
-
+(async function () {
+  try {
+    const list = await getPokemonList()
+/*    for(let listItem of list.results) {
+      const pokemon = await getPokemon(listItem.url)*/
+    list.results.reduce<Promise<unknown>>(async (promise, pokemon) => {
+      await promise //?? how does it work?
+      return getPokemon(pokemon.url).then(p => console.log(p.name))
+    }, Promise.resolve(undefined))
+    }
+    // list.results.slice(0,10).forEach(async (listItem) => {  // forEach is incompatible with sync await
+    //   const pokemon = await getPokemon(listItem.url)
+    //   console.log(pokemon.name)
+    // })
+   catch (error) {
+    console.log(error)
+  }
+})()
 
