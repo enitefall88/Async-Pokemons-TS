@@ -7,7 +7,7 @@ interface PokemonList {
   results: {
     name: string,
     url: string;
-  } []; // array of objects
+  } []; // array of objects?
 }
 
 interface Pokemon {
