@@ -1,4 +1,5 @@
 import fetch from "node-fetch"
+import {PromisePool} from "@supercharge/promise-pool"
 
 interface PokemonList {
   count: number;
@@ -83,18 +84,39 @@ const getFirstPokemon = async (): Promise<Pokemon> => { //try and catch is imple
 (async function () {
   try {
     const list = await getPokemonList()
-/*    for(let listItem of list.results) {
-      const pokemon = await getPokemon(listItem.url)*/
-    list.results.reduce<Promise<unknown>>(async (promise, pokemon) => {
-      await promise //?? how does it work?
-      return getPokemon(pokemon.url).then(p => console.log(p.name))
-    }, Promise.resolve(undefined))
-    }
-    // list.results.slice(0,10).forEach(async (listItem) => {  // forEach is incompatible with sync await
-    //   const pokemon = await getPokemon(listItem.url)
-    //   console.log(pokemon.name)
-    // })
-   catch (error) {
+    /*    for(let listItem of list.results) {
+          const pokemon = await getPokemon(listItem.url)*!/
+        list.results.reduce<Promise<unknown>>(async (promise, pokemon) => {
+          await promise //?? how does it work?
+          return getPokemon(pokemon.url).then(p => console.log(p.name))
+        }, Promise.resolve(undefined))*/
+/*    const data = await Promise.all(list.results.slice(0,5).map((pokemon) => { // => {getPokemon(pokemon.url)} it is not gonna work as there is no return
+      return getPokemon(pokemon.url)} // await here returns a promise
+    ))
+    console.log(data)*/
+    const {PromisePool} = require('@supercharge/promise-pool')
+
+    const users = [
+      {name: 'Marcus'},
+      {name: 'Norman'},
+      {name: 'Christian'}
+    ]
+
+    const {results, errors} = await PromisePool
+        .withConcurrency(10)
+        .for(list.results)
+        .process(async (data: any ) => { // how to fix here?
+          return await getPokemon(data.url)
+  })
+    console.log(results.map((pokemon: any)=> {
+      console.log(pokemon.name)
+    }))
+  }
+      // list.results.slice(0,10).forEach(async (listItem) => {  // forEach is incompatible with sync await
+      //   const pokemon = await getPokemon(listItem.url)
+      //   console.log(pokemon.name)
+      // })
+  catch (error) {
     console.log(error)
   }
 })()

@@ -10,6 +10,7 @@
     "typescript": "4.4.2"
   },
   "dependencies": {
+    "@supercharge/promise-pool": "^2.1.0",
     "node-fetch": "2.6.1"
   }
 }
