@@ -52,6 +52,7 @@ const getPokemon = async (url:string): Promise<Pokemon> => {
   return await dataResponse.json()
   }
 
+  //with a Promise
 const getFirstPokemon = async (): Promise<Pokemon> => {
   return new Promise(async (resolve, reject) => {   // async func here and has to return a promise N.B!
     try {
