@@ -102,7 +102,7 @@ const getPokemon = async (url:string):Promise<Pokemon> => {
    const pokemon = await getPokemon(list.results[0].url)
   const dataResp = await fetch(list.results[0].url)
    const data = await  dataResp.json()
-   console.log(list)
+   console.log(data)
   } catch (e) {  // without catch is not working
     console.log(e)
   }
